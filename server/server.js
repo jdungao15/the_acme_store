@@ -33,7 +33,7 @@ app.use(express.json());
     const [candy, soda, iceCream] = await Promise.all(products.map(createProduct));
     
 
-    app.use("/api/", router)
+    app.use(router)
 
     app.listen(PORT, () => {
         console.log(`The server is up on ${PORT}`);
