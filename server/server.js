@@ -1,8 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const {client, createTables,createProduct,fetchUsers,createUser,createFavorite} = require('./db');
-
+const {client, createTables,createProduct,createUser,fetchUsers} = require('./db');
+const router = require('./routes');
+PORT = process.env.PORT || 3000;
+app.use(express.json());
 
 
 
@@ -30,11 +32,13 @@ const {client, createTables,createProduct,fetchUsers,createUser,createFavorite} 
     const [moe, larry, curly] = await Promise.all(users.map(createUser));
     const [candy, soda, iceCream] = await Promise.all(products.map(createProduct));
     
-    console.log({moe, larry, curly, candy, soda, iceCream});
 
-    app.listen(3000, () => {
-        console.log(`The server is up on ${process.env.PORT || 4000}`);
-    }
-    );
+    app.use("/api/", router)
+
+    app.listen(PORT, () => {
+        console.log(`The server is up on ${PORT}`);
+    });
+
+   
 })();
 
