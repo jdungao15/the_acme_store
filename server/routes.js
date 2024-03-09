@@ -26,12 +26,19 @@ router.get('/api/users/:id/favorites', async (req, res, next) => {
     }
 });
 
-router.post('/api/users/:user_id/favorites', async (req, res, next) => {
-    const {user_id} = req.params;
-    const {product_id} = req.body;
-    console.log({user_id, product_id})
+router.post('/api/users/:id/favorites', async (req, res, next) => {
     try {
-        res.send(await createFavorite({user_id, product_id}));
+        res.send(await createFavorite({id, product_id}));
+        res.sendStatus(201);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.delete('/api/users/:user_id/favorites/:id', async (req, res, next) => {
+    try {
+        await destroyFavorite(req.params);
+        res.sendStatus(204);
     } catch (error) {
         next(error);
     }

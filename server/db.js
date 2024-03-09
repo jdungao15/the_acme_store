@@ -50,10 +50,9 @@ const createUser = async({username, password}) => {
     return response.rows[0];
 }
 
-const createFavorite = async({user_id, product_id}) => {
-    console.log(user_id, product_id)
+const createFavorite = async({id, product_id}) => {
     const SQL = 'INSERT INTO favorites(id, user_id, product_id) VALUES($1, $2, $3) RETURNING *';
-    const response = await client.query(SQL, [uuid.v4(), user_id, product_id]);
+    const response = await client.query(SQL, [uuid.v4(), id, product_id]);
     return response.rows[0];
 }
 
@@ -75,8 +74,10 @@ const fetchFavorites = async (user_id) => {
 }
 
 // DELETE
-const destroyFavorite = async (id) => {
- 
+const destroyFavorite = async ({user_id, id}) => {
+    const SQL = 'DELETE FROM favorites WHERE user_id=$1 AND id=$2';
+    const response = await client.query(SQL, [user_id, id]);
+    return response.rows;
 }
 
 
